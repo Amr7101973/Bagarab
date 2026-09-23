@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مولّد المزاج اليومي</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; display:grid; place-items:center; padding:20px;
+  font-family:system-ui,sans-serif; color:#f8fafc;
+  background:radial-gradient(circle at top,#312e81 0,#111827 45%,#030712 100%);
+}
+.card{
+  width:min(620px,100%); padding:32px; border:1px solid #ffffff1a;
+  border-radius:24px; background:#ffffff0d; backdrop-filter:blur(18px);
+  box-shadow:0 25px 70px #0008; text-align:center;
+}
+.badge{display:inline-block;padding:7px 12px;border-radius:999px;background:#ffffff12;color:#c4b5fd;font-size:13px}
+h1{font-size:clamp(28px,6vw,48px);margin:18px 0 8px}
+.subtitle{color:#cbd5e1;line-height:1.7;margin:0 auto 24px;max-width:500px}
+.mood{
+  min-height:170px; display:grid; place-items:center; padding:20px;
+  border-radius:20px; background:#0003; margin:22px 0;
+}
+.emoji{font-size:64px}.result{font-size:22px;font-weight:800}.reason{color:#cbd5e1;margin-top:8px}
+button{
+  border:0; border-radius:14px; padding:14px 22px; font-size:16px;
+  font-weight:800; cursor:pointer; color:white; background:#7c3aed;
+  transition:.2s transform,.2s filter;
+}
+button:hover{transform:translateY(-2px);filter:brightness(1.12)}
+button:active{transform:translateY(0)}
+.history{margin-top:22px;text-align:right}
+.history h3{margin-bottom:10px}
+#historyList{display:flex;flex-wrap:wrap;gap:8px}
+.item{padding:8px 11px;border-radius:10px;background:#ffffff0d;color:#cbd5e1;font-size:13px}
+.footer{margin-top:22px;color:#64748b;font-size:12px}
+</style>
+</head>
+<body>
+<main class="card">
+  <span class="badge">مشروع عشوائي 😂</span>
+  <h1>🎲 مولّد المزاج اليومي</h1>
+  <p class="subtitle">اضغط الزر وسيقرر لك الموقع مودك النهارده... بدون أي مسؤولية قانونية 😎</p>
+
+  <section class="mood" aria-live="polite">
+    <div>
+      <div class="emoji" id="emoji">❓</div>
+      <div class="result" id="result">مستني قرارك...</div>
+      <div class="reason" id="reason">يمكن النهارده يكون يومك.</div>
+    </div>
+  </section>
+
+  <button id="generate">حدد مودي 🎯</button>
+
+  <section class="history">
+    <h3>آخر النتائج</h3>
+    <div id="historyList"><span class="item">لسه مفيش نتائج</span></div>
+  </section>
+
+  <div class="footer">كل النتائج عشوائية 100% — متاخدهاش بجد 😂</div>
+</main>
+
+<script>
+const moods = [
+  ["🔥","مود الوحش","النهارده مناسب تبدأ حاجة كنت مأجلها بقالك فترة."],
+  ["😴","مود البطاطسا","أي مجهود إضافي النهارده يعتبر إنجاز تاريخي."],
+  ["🧠","مود العبقري","مخك شغال بسرعة... حاول تستغلها قبل ما تختفي."],
+  ["😂","مود الضحك","أي حاجة هتحصل النهارده غالبًا هتضحكك."],
+  ["🎮","مود الجيمينج","المهمة الأساسية: ماتخليش جملة «جيم واحدة بس» تتحول لـ 5 ساعات."],
+  ["🚀","مود الإنجاز","اختار مهمة واحدة وخلصها دلوقتي بدل ما تجمع 17 مهمة."],
+  ["☕","مود الهدوء","خد نفس، اشرب حاجة، وامشي اليوم على مهلك."],
+  ["🤯","مود أنا مش فاهم حاجة","ممنوع اتخاذ قرارات مصيرية قبل ما المخ يعمل Restart."],
+  ["💡","مود الفكرة الجامدة","اكتب أي فكرة تيجي في دماغك، يمكن تطلع مشروع محترم."]
+];
+
+const emoji = document.getElementById("emoji");
+const result = document.getElementById("result");
+const reason = document.getElementById("reason");
+const historyList = document.getElementById("historyList");
+const button = document.getElementById("generate");
+let history = [];
+
+button.onclick = () => {
+  button.disabled = true;
+  button.textContent = "⏳ جاري تحليل الكون...";
+
+  setTimeout(() => {
+    const mood = moods[Math.floor(Math.random() * moods.length)];
+    emoji.textContent = mood[0];
+    result.textContent = mood[1];
+    reason.textContent = mood[2];
+
+    history.unshift(`${mood[0]} ${mood[1]}`);
+    history = history.slice(0, 6);
+    historyList.innerHTML = history.map(x => `<span class="item">${x}</span>`).join("");
+
+    button.disabled = false;
+    button.textContent = "حدد مودي تاني 🎯";
+  }, 500);
+};
+</script>
+</body>
+</html>
